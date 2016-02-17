@@ -26,7 +26,11 @@ function createStore(initialState) {
 }
 
 function compose(component, props, children) {
-  return component(props, children.join(""));
+  if (children == null) {
+    return component(props);
+  } else {
+    return component(props, children.join(""));
+  }
 }
 
 function render(component, container) {

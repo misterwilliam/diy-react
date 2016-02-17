@@ -1,5 +1,5 @@
-function hello(props) {
-  return "<div>Hello " + props.name + "</div>";
+function div(props, children) {
+  return "<div>" + children + "</div>";
 }
 
 function textInput(props) {
@@ -18,11 +18,17 @@ function todoList(props, children) {
 }
 
 function main() {
+  const root = compose(
+    div, null, [
+      textInput({value: "Enter in a todo"}),
+      compose(todoList, null, [
+        todoItem({item: "Take out trash"}),
+        todoItem({item: "Fold laundry"})
+      ])
+    ]
+  );
   const wrapper = document.getElementById('wrapper');
-  render(compose(todoList, null, [
-    todoItem({item: "Take out trash"}),
-    todoItem({item: "Fold laundry"})
-  ]), wrapper);
+  render(root, wrapper);
 }
 
 document.addEventListener("DOMContentLoaded", main);
