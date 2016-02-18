@@ -1,13 +1,6 @@
-function div(props, children) {
-  return "<div>" + children + "</div>";
-}
-
-function textInput(props) {
-  return "<input type='text' value='" + props.value + "' />";
-}
 
 function todoItem(props) {
-  return "<div>" + props.item + "</div>";
+  return compose(Div, null, [props.item]);
 }
 
 function todoList(props, children) {
@@ -18,17 +11,23 @@ function todoList(props, children) {
 }
 
 function main() {
-  const root = compose(
-    div, null, [
-      textInput({value: "Enter in a todo"}),
-      compose(todoList, null, [
-        todoItem({item: "Take out trash"}),
-        todoItem({item: "Fold laundry"})
-      ])
-    ]
-  );
+  // const root = compose(
+  //   div, null, [
+  //     textInput({value: "Enter in a todo"}),
+  //     compose(todoList, null, [
+  //       todoItem({item: "Take out trash"}),
+  //       todoItem({item: "Fold laundry"})
+  //     ])
+  //   ]
+  // );
+  const root = compose(Div, null, [
+    "hello",
+    Input({type: "text", value: "Yo"}),
+    todoItem({item: "Take out trash"})
+  ]);
   const wrapper = document.getElementById('wrapper');
-  render(root, wrapper);
+  const store = createStore({});
+  render(root, wrapper, store);
 }
 
 document.addEventListener("DOMContentLoaded", main);

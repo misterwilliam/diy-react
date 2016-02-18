@@ -1,5 +1,23 @@
 "use strict";
 
+// props: Object
+// Component: (props, children: Array<Element>, store) => null | string | Element
+// Compose:
+//   (component, props, children: Array<null|string|Element>) => Element
+
+const _ = {
+  isString: function(val) {
+    return (typeof val === 'string' || val instanceof String);
+  },
+  forEach: function(obj, callback) {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        callback(key, obj[key]);
+      }
+    }
+  }
+}
+
 function createStore(initialState) {
   var _state = initialState || {}
   var _listeners = [];
@@ -25,14 +43,49 @@ function createStore(initialState) {
   };
 }
 
+function createDomElement(elementName) {
+  return function(props, children) {
+    const element = document.createElement(elementName);
+    if (props != null) {
+      _.forEach(props, function(key, value) {
+        element.setAttribute(key, value);
+      })
+    }
+    if (children != null) {
+      children.forEach(function(child) {
+        element.appendChild(child);
+      })
+    }
+    return element;
+  }
+}
+const Div = createDomElement('div');
+const Input = createDomElement("input");
+
 function compose(component, props, children) {
   if (children == null) {
     return component(props);
   } else {
-    return component(props, children.join(""));
+    const _normalizedChildren = [];
+    // Normalize children to HTMLElement's
+    children.forEach(function(child) {
+      if (child == null) {
+        return;
+      }
+      if (_.isString(child)) {
+        child = document.createTextNode(child);
+      }
+      _normalizedChildren.push(child);
+    })
+    return component(props, _normalizedChildren);
   }
 }
 
-function render(component, container) {
-  container.innerHTML = component;
+function render(component, container, store) {
+  container.innerHTML = "";
+  container.appendChild(component);
+  store.onUpdate("render", function() {
+    container.innerHTML = "";
+    container.appendChild(component);
+  })
 }
