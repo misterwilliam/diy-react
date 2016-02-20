@@ -5,19 +5,6 @@
 // Compose:
 //   (component, props, children: Array<null|string|Element>) => Element
 
-const _ = {
-  isString: function(val) {
-    return (typeof val === 'string' || val instanceof String);
-  },
-  forEach: function(obj, callback) {
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        callback(key, obj[key]);
-      }
-    }
-  }
-}
-
 function createStore(initialState) {
   var _state = initialState || {}
   var _listeners = [];
