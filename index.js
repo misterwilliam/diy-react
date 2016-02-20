@@ -14,11 +14,11 @@ function todoItem(props) {
 function todoList(props, children, store) {
   const todos = store.getState().todos;
   return compose(Div, null, [
-    compose(H1, null, ["Todos"]),
-    ...todos.map(function(todo) {
-      return todoItem(todo);
-    })
-  ])
+           compose(H1, null, ["Todos"]),
+           ...todos.map(function(todo) {
+             return todoItem(todo);
+           })
+         ])
 }
 
 function app(props, children, store) {
