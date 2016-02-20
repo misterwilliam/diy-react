@@ -35,6 +35,7 @@ function createDomElement(elementName) {
     const element = document.createElement(elementName);
     if (props != null) {
       _.forEach(props, function(key, value) {
+        // TODO: add support for adding other kinds of event listeners
         if (key === "onSubmit") {
           element.addEventListener("submit", value);
         } else {
