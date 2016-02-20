@@ -40,12 +40,8 @@ function app(props, children, store) {
 }
 
 function main() {
-  const store = createStore({
-    todos: []
-  });
   const wrapper = document.getElementById('wrapper');
-
-  render(wrapper, app, {}, store);
+  render(wrapper, app, {}, {todos: []});
 }
 
 document.addEventListener("DOMContentLoaded", main);

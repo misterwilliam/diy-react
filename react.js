@@ -76,12 +76,12 @@ function compose(component, props, children) {
   }
 }
 
-function render(container, component, props, store) {
-  globalStore = store;
+function render(container, component, props, initial_store) {
+  globalStore = createStore(initial_store);
   container.innerHTML = "";
-  container.appendChild(component(props, [], store));
-  store.onUpdate("render", function() {
+  container.appendChild(component(props, [], globalStore));
+  globalStore.onUpdate("render", function() {
     container.innerHTML = "";
-    container.appendChild(component(props, [], store));
+    container.appendChild(component(props, [], globalStore));
   })
 }
