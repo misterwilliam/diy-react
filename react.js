@@ -48,7 +48,11 @@ function createDomElement(elementName) {
     const element = document.createElement(elementName);
     if (props != null) {
       _.forEach(props, function(key, value) {
-        element.setAttribute(key, value);
+        if (key === "onSubmit") {
+          element.addEventListener("submit", value);
+        } else {
+          element.setAttribute(key, value);
+        }
       })
     }
     if (children != null) {
@@ -59,12 +63,15 @@ function createDomElement(elementName) {
     return element;
   }
 }
+const H1 = createDomElement('h1');
 const Div = createDomElement('div');
+const Form = createDomElement('form');
 const Input = createDomElement("input");
 
+let globalStore = null;
 function compose(component, props, children) {
   if (children == null) {
-    return component(props);
+    return component(props, null, globalStore);
   } else {
     const _normalizedChildren = [];
     // Normalize children to HTMLElement's
@@ -77,15 +84,16 @@ function compose(component, props, children) {
       }
       _normalizedChildren.push(child);
     })
-    return component(props, _normalizedChildren);
+    return component(props, _normalizedChildren, globalStore);
   }
 }
 
-function render(component, container, store) {
+function render(component, container, props, store) {
+  globalStore = store;
   container.innerHTML = "";
-  container.appendChild(component);
+  container.appendChild(component(props, [], store));
   store.onUpdate("render", function() {
     container.innerHTML = "";
-    container.appendChild(component);
+    container.appendChild(component(props, [], store));
   })
 }
