@@ -88,7 +88,7 @@ function compose(component, props, children) {
   }
 }
 
-function render(component, container, props, store) {
+function render(container, component, props, store) {
   globalStore = store;
   container.innerHTML = "";
   container.appendChild(component(props, [], store));

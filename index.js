@@ -45,7 +45,7 @@ function main() {
   });
   const wrapper = document.getElementById('wrapper');
 
-  render(app, wrapper, {}, store);
+  render(wrapper, app, {}, store);
 }
 
 document.addEventListener("DOMContentLoaded", main);
